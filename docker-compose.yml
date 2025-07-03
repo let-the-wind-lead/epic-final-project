@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: epicuser
+      POSTGRES_PASSWORD: epicuser
+      POSTGRES_DB: epicdb
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+
+  web:
+    build: ./app
+    environment:
+      DATABASE_URL: "postgres://epicuser:epicuser@db:5432/epicdb"
+      AUTH0_SECRET: auth0-secret
+      AUTH0_CLIENT_ID: EVNciiDMZVqVQjX6LXlHx1BYzZ1XsJ7t
+      AUTH0_CLIENT_SECRET: 3u5-kNA5HIXBLePSerUMrLzZXkX9zrwzRHln_vXJNQEI0jApF0pppbPqgNLp3gaG
+      AUTH0_ISSUER_BASE_URL: "https://ac-hw9.us.auth0.com"
+      BASE_URL: "https://app.anacrnkovic-homework-nc.com"
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+      - ./init.sh:/init.sh
+    environment:
+      DOMAIN: app.anacrnkovic-homework-nc.com
+    entrypoint: ["/bin/sh", "/init.sh"]
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - web
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certs:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+      - ./certbot-init.sh:/certbot-init.sh
+    environment:
+      DOMAIN: app.anacrnkovic-homework-nc.com
+      EMAIL: rawenariel8@gmail.com
+    entrypoint: ["/bin/sh", "/certbot-init.sh"]
