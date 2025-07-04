@@ -11,7 +11,7 @@ services:
       - ./db_data:/var/lib/postgresql/data
 
   web:
-    build: ./app
+    image: 260073348817.dkr.ecr.us-east-1.amazonaws.com/epic-registry-live
     environment:
       DATABASE_URL: "postgres://epicuser:epicuser@db:5432/epicdb"
       AUTH0_SECRET: auth0-secret
