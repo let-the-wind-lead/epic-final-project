@@ -1,20 +1,22 @@
 #!/bin/bash
 set -e
 
-# Install AWS CLI if not already installed (can be skipped if AMI has it preinstalled)
-snap install aws-cli --classic
+# Install AWS CLI if not already installed
+snap install aws-cli --classic || true
 
 # Authenticate Docker with AWS ECR
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <your-ecr-repo>.dkr.ecr.us-east-1.amazonaws.com
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 260073348817.dkr.ecr.us-east-1.amazonaws.com
 
-# Go to your app's directory
+# Navigate to project directory
 cd /home/ubuntu/epic-final-project
 
-# Start containers
+# Start containers in detached mode
 docker compose up -d
 
-# Reload nginx if running
+# Get the container ID for the nginx service
 NGINX_CONTAINER_ID=$(docker compose ps -q nginx)
+
+# Reload nginx if it's already running
 if [ -n "$NGINX_CONTAINER_ID" ]; then
   docker exec "$NGINX_CONTAINER_ID" nginx -s reload || true
 fi
