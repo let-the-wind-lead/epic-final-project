@@ -11,7 +11,7 @@ aws ecr get-login-password --region us-east-1 | docker login --username AWS --pa
 cd /home/ubuntu/epic-final-project
 
 # Start containers in detached mode
-docker compose up -d
+docker-compose up -d
 
 # Get the container ID for the nginx service
 NGINX_CONTAINER_ID=$(docker compose ps -q nginx)
