@@ -3,10 +3,11 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ubuntu/epic-final-project
+    destination: /home/ubuntu/epic-final-project      # ← your target folder on EC2
     overwrite: yes
     exclude:
-      - app/**                      
+      - app/**                        # ← don’t copy the app folder if you’ll pull it via Docker
+
 file_exists_behavior: OVERWRITE
 
 permissions:
