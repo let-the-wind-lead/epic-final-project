@@ -1,0 +1,27 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /
+    destination: /home/ubuntu/epic-final-project      # ← your target folder on EC2, /home/ubuntu/epic-final-project, otherwise /opt/deployment
+    overwrite: yes
+    exclude:
+      - app/**                        # ← don’t copy the app folder if you’ll pull it via Docker
+file_exists_behavior: OVERWRITE
+permissions:
+  - object: /home/ubuntu/epic-final-project
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+    mode: 755
+
+hooks:
+  BeforeInstall:
+    - location: scripts/stop_application.sh
+      timeout: 300
+      runas: root
+
+  ApplicationStart:
+    vm- location: scripts/start_application.sh
+      timeout: 300
+      runas: root
