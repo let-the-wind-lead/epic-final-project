@@ -48,3 +48,4 @@ services:
       DOMAIN: app.anacrnkovic-homework-nc.com
       EMAIL: rawenariel8@gmail.com
     entrypoint: ["/bin/sh", "/certbot-init.sh"]
+    
