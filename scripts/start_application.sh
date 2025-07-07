@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-cd /opt/deployment
+cd /home/ubuntu/epic-final-project
 docker compose up -d
 # Get the container ID for the 'nginx' service
 NGINX_CONTAINER_ID=$(docker compose ps -q nginx)
