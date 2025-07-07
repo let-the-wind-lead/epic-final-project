@@ -8,10 +8,10 @@ snap install aws-cli --classic || true
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 260073348817.dkr.ecr.us-east-1.amazonaws.com
 
 # Navigate to project directory
-cd /home/ubuntu/epic-final-project
+cd /opt/deployment
 
 # Start containers in detached mode
-docker-compose up -d
+docker compose up -d
 
 # Get the container ID for the nginx service
 NGINX_CONTAINER_ID=$(docker compose ps -q nginx)
